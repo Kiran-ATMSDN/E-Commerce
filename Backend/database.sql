@@ -17,12 +17,6 @@ CREATE TABLE main_category(
     image_url VARCHAR(255) 
 );
 
-CREATE TABLE sub_category(
-    id SERIAL PRIMARY KEY,
-    title VARCHAR(30),
-    main_category_id INTEGER 
-);
-
 CREATE TABLE sub_category (
     id SERIAL PRIMARY KEY,
     title varchar(50),
