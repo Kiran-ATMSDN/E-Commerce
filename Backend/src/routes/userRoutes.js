@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 router.use(express.json());
+const bcrypt = require('bcrypt');
 
 // Import the pool or database connection
 const pool = require("../../db");
@@ -118,6 +119,43 @@ router.delete("/deleteUser/:id", async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");
+  }
+});
+
+router.post("/login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Check if email and password are provided
+    if (!email || !password) {
+      return res
+        .status(400)
+        .json({ message: "Please provide email and password" });
+    }
+
+    // Query to find user by email
+    const user = await pool.query("SELECT * FROM users WHERE email = $1", [
+      email,
+    ]);
+
+    // Check if user exists
+    if (user.rows.length === 0) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    const hashedPassword = user.rows[0].password; // Assuming the password is stored in the 'password' column
+
+    // Compare the provided password with the hashed password in the database
+    const passwordMatch = await bcrypt.compare(password, hashedPassword);
+
+    if (!passwordMatch) {
+      return res.status(401).json({ message: "Invalid email or password" });
+    }
+
+    return res.status(200).json({ message: "Login successful"});
+  } catch (err) {
+    console.error("Login error:", err);
+    return res.status(500).json({ message: "Internal Server Error" });
   }
 });
 
