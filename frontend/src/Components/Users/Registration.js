@@ -1,121 +1,120 @@
 const Registration = () => {
   return (
     <>
-      <div className="container w-50">
-        <form action="localhost://3000/addUsers" method="post">
-          <div className="form-group">
-            <label htmlFor="name" className="form-label">
-              Name
-            </label>
-            <input
-              type="text"
-              id="txtName"
-              name="name"
-              className="form-control"
-              required
-            />
+      <div className="flex justify-center">
+        <form className="w-full max-w-lg">
+          <div className="flex flex-wrap -mx-3 mb-6">
+            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <label
+                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-first-name"
+              >
+                Name
+              </label>
+              <input
+                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-red-500 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white"
+                id="grid-first-name"
+                type="text"
+                placeholder="Jane"
+              />
+              <p className="text-red-500 text-xs italic">
+                Please fill out this field.
+              </p>
+            </div>
+            <div className="w-full md:w-1/2 px-3">
+              <label
+                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-last-name"
+              >
+                Email
+              </label>
+              <input
+                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                id="txtEmail"
+                type="email"
+                placeholder="test@email.com"
+              />
+            </div>
           </div>
-          <div>
-            <label htmlFor="email" className="form-label">
-              Email
-            </label>
-            <input
-              type="email"
-              id="txtEmail"
-              name="email"
-              className="form-control"
-              required
-            />
+
+          <div className="flex flex-wrap -mx-3 mb-2">
+            <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+              <label
+                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="mobileNo"
+              >
+                Mobile No.
+              </label>
+              <input
+                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                id="txtMobNo"
+                type="number"
+                placeholder="+91 123456789"
+              />
+            </div>
+            <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+              <label
+                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="gender"
+              >
+                Gender
+              </label>
+              <input
+                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                id="txtGender"
+                type="text"
+                placeholder="Gender"
+              />
+            </div>
           </div>
-          <div>
-            <label for="gender" className="form-label">
-              Gender
-            </label>
-            <select name="gender" id="txtGender" className="form-control w-25">
-              <option value="" disabled selected>
-                Select Gender
-              </option>
-              <option value="male">Male</option>
-              <option value="female">Female</option>
-              <option value="other">Other</option>
-            </select>
-            <label htmlFor="birthDate" className="form-label">
-              Date of Birth
-            </label>
-            <input
-              type="date"
-              name="birth_date"
-              id="txtBirthDate"
-              className="form-control w-25"
-              required
-            />
+          <div className="flex flex-wrap -mx-3 mb-6">
+            <div className="w-full px-3">
+              <label
+                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-password"
+              >
+                Password
+              </label>
+              <input
+                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                id="grid-password"
+                type="password"
+                placeholder="******************"
+              />
+              <p className="text-gray-600 text-xs italic">
+                Make it as long and as crazy as you'd like
+              </p>
+            </div>
           </div>
-          <div>
-            <label htmlFor="mobileNo" className="form-label">
-              Mobile Number
-            </label>
-            <input
-              type="number"
-              name="mobile_no"
-              id="txtMobNo"
-              className="form-control"
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="address" className="form-label">
-              Address
-            </label>
-            <textarea
-              id="w3review"
-              name="w3review"
-              className="form-control"
-              rows="2"
-              cols="30"
-            ></textarea>
-          </div>
-          <div>
-            <label htmlFor="city" className="form-label">
-              City
-            </label>
-            <input
-              type="text"
-              name="city"
-              id="txtCity"
-              className="form-control"
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="pin_code" className="form-label">
-              Pin Code
-            </label>
-            <input
-              type="number"
-              name="pin_code"
-              id="txtPinCode"
-              className="form-control"
-              required
-            />
-          </div>
-          <div>
-            <label htmlFor="password" className="form-label">
-              Password
-            </label>
-            <input
-              type="password"
-              name="password"
-              id="txtPassword"
-              className="form-control"
-              required
-            />
-          </div>
-          <div>
-            <input
-              type="submit"
-              value="Submit"
-              className="btn btn-outline-info mt-4"
-            />
+          <div className="flex flex-wrap -mx-3 mb-2">
+            <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+              <label
+                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-city"
+              >
+                City
+              </label>
+              <input
+                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                id="grid-city"
+                type="text"
+                placeholder="Albuquerque"
+              />
+            </div>
+            <div className="w-full md:w-1/3 px-3 mb-6 md:mb-0">
+              <label
+                className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+                for="grid-zip"
+              >
+                Zip
+              </label>
+              <input
+                className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                id="grid-zip"
+                type="text"
+                placeholder="90210"
+              />
+            </div>
           </div>
         </form>
       </div>
