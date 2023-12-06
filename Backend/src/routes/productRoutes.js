@@ -10,7 +10,7 @@ router.get("/porducts", function (req, res) {
 });
 
 //registration page
-router.post("/addProduct", async (req, res) => {
+router.post("/product/addProduct", async (req, res) => {
   try {
     const {
       id,
@@ -35,7 +35,7 @@ router.post("/addProduct", async (req, res) => {
 });
 
 // All products
-router.get("/allProducts", async (req, res) => {
+router.get("/product/allProducts", async (req, res) => {
   try {
     const allProducts = await pool.query("SELECT * FROM products");
     if (allProducts.rows.length === 0) {
@@ -51,7 +51,7 @@ router.get("/allProducts", async (req, res) => {
 });
 
 // search products
-router.get("/product/:id", async (req, res) => {
+router.get("/product/products/:id", async (req, res) => {
   try {
     const { id } = req.params; // Extract id from params
     const productSearch = await pool.query(
@@ -72,7 +72,7 @@ router.get("/product/:id", async (req, res) => {
 });
 
 // update product
-router.put("/updateProduct/:id", async (req, res) => {
+router.put("/product/updateProduct/:id", async (req, res) => {
   try {
     const { id } = req.params; // Extract id from params
 
@@ -92,7 +92,7 @@ router.put("/updateProduct/:id", async (req, res) => {
 });
 
 // delete products
-router.delete("/deleteProduct/:id", async (req, res) => {
+router.delete("/product/deleteProduct/:id", async (req, res) => {
   try {
     const { id } = req.params; // Extract id from params
 

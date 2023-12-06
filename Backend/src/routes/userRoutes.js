@@ -7,12 +7,12 @@ const bcrypt = require('bcrypt');
 const pool = require("../../db");
 
 //home page
-router.get("/", function (req, res) {
+router.get("/user", function (req, res) {
   res.send("it's Home Page!!!");
 });
 
 //registration page
-router.post("/registration", async (req, res) => {
+router.post("/user/registration", async (req, res) => {
   try {
     const {
       id,
@@ -52,7 +52,7 @@ router.post("/registration", async (req, res) => {
 });
 
 // All users
-router.get("/allUsers", async (req, res) => {
+router.get("/user/allUsers", async (req, res) => {
   try {
     const allUsers = await pool.query("SELECT * FROM users");
     if (allUsers.rows.length === 0) {
@@ -68,7 +68,7 @@ router.get("/allUsers", async (req, res) => {
 });
 
 // search users
-router.get("/users/:id", async (req, res) => {
+router.get("/user/users/:id", async (req, res) => {
   try {
     const { id } = req.params; // Extract id from params
     const userSearch = await pool.query("SELECT * FROM users WHERE id = $1", [
@@ -88,7 +88,7 @@ router.get("/users/:id", async (req, res) => {
 });
 
 // update user
-router.put("/updateUser/:id", async (req, res) => {
+router.put("/user/updateUser/:id", async (req, res) => {
   try {
     const { id } = req.params; // Extract id from params
 
@@ -107,7 +107,7 @@ router.put("/updateUser/:id", async (req, res) => {
 });
 
 // delete users
-router.delete("/deleteUser/:id", async (req, res) => {
+router.delete("/user/deleteUser/:id", async (req, res) => {
   try {
     const { id } = req.params; // Extract id from params
 
@@ -122,7 +122,7 @@ router.delete("/deleteUser/:id", async (req, res) => {
   }
 });
 
-router.post("/login", async (req, res) => {
+router.post("/user/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 

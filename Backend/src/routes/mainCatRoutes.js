@@ -5,12 +5,12 @@ router.use(express.json());
 // Import the pool or database connection
 const pool = require("../../db");
 
-router.get("/categories", function (req, res) {
+router.get("/categories", function (req, res)  {
   res.send("it's categories Page!!!");
 });
 
 //add categories
-router.post("/addCategory", async (req, res) => {
+router.post("/category/addCategory", async (req, res) => {
   try {
     const { id, title, image_url } = req.body;
 
@@ -28,7 +28,7 @@ router.post("/addCategory", async (req, res) => {
 });
 
 // all categories
-router.get("/allCategories", async (req, res) => {
+router.get("/category/allCategories", async (req, res) => {
   try {
     const allCategories = await pool.query("SELECT * FROM main_category");
     if (allCategories.rows.length === 0) {
@@ -44,7 +44,7 @@ router.get("/allCategories", async (req, res) => {
 });
 
 // search categories
-router.get("/categories/:id", async (req, res) => {
+router.get("/category/categories/:id", async (req, res) => {
   try {
     const { id } = req.params; // Extract id from params
     const searchCategory = await pool.query(
@@ -65,7 +65,7 @@ router.get("/categories/:id", async (req, res) => {
 });
 
 // update category
-router.put("/updateCategory/:id", async (req, res) => {
+router.put("/category/updateCategory/:id", async (req, res) => {
   try {
     const { id } = req.params; // Extract id from params
 
@@ -84,7 +84,7 @@ router.put("/updateCategory/:id", async (req, res) => {
 });
 
 // delete category
-router.delete("/deleteCategory/:id", async (req, res) => {
+router.delete("/category/deleteCategory/:id", async (req, res) => {
   try {
     const { id } = req.params; // Extract id from params
 

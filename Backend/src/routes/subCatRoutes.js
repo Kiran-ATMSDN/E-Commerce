@@ -10,7 +10,7 @@ router.get("/subCategories", function (req, res) {
 });
 
 //add sub_categories
-router.post("/addSubCategory", async (req, res) => {
+router.post("/subCategory/addSubCategory", async (req, res) => {
   try {
     const { id, title, main_category_id } = req.body;
 
@@ -28,7 +28,7 @@ router.post("/addSubCategory", async (req, res) => {
 });
 
 // all categories
-router.get("/allSubCategories", async (req, res) => {
+router.get("/subCategory/allSubCategories", async (req, res) => {
   try {
     const allSubCategories = await pool.query("SELECT * FROM sub_category");
     if (allSubCategories.rows.length === 0) {
@@ -44,7 +44,7 @@ router.get("/allSubCategories", async (req, res) => {
 });
 
 // search categories
-router.get("/subCategories/:id", async (req, res) => {
+router.get("/subCategory/subCategories/:id", async (req, res) => {
   try {
     const { id } = req.params; // Extract id from params
     const searchSubCategory = await pool.query(
@@ -65,7 +65,7 @@ router.get("/subCategories/:id", async (req, res) => {
 });
 
 // update category
-router.put("/updateSubCategory/:id", async (req, res) => {
+router.put("/subCategory/updateSubCategory/:id", async (req, res) => {
   try {
     const { id } = req.params; // Extract id from params
 
@@ -84,7 +84,7 @@ router.put("/updateSubCategory/:id", async (req, res) => {
 });
 
 // delete category
-router.delete("/deleteSubCategory/:id", async (req, res) => {
+router.delete("/subCategory/deleteSubCategory/:id", async (req, res) => {
   try {
     const { id } = req.params; // Extract id from params
 
