@@ -54,7 +54,7 @@ router.post("/user/registration", async (req, res) => {
 // All users
 router.get("/user/allUsers", async (req, res) => {
   try {
-    const allUsers = await pool.query("SELECT * FROM users");
+    const allUsers = await pool.query("SELECT id, name, email, gender, mob_no, birth_date, address, pin_code, city, password FROM users");
     if (allUsers.rows.length === 0) {
       // If no user found, send a custom message
       return res.status(404).json({ message: "User not found" });
@@ -71,7 +71,7 @@ router.get("/user/allUsers", async (req, res) => {
 router.get("/user/users/:id", async (req, res) => {
   try {
     const { id } = req.params; // Extract id from params
-    const userSearch = await pool.query("SELECT * FROM users WHERE id = $1", [
+    const userSearch = await pool.query("SELECT id, name, email, gender, mob_no, birth_date, address, pin_code, city, password FROM users WHERE id = $1", [
       id,
     ]);
 
@@ -80,12 +80,13 @@ router.get("/user/users/:id", async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.json(userSearch.rows); // Send rows from the query result
+    res.json(userSearch.rows[0]); // Send the first (and only) user object directly
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");
   }
 });
+
 
 // update user
 router.put("/user/updateUser/:id", async (req, res) => {

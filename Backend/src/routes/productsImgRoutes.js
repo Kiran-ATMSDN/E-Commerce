@@ -5,7 +5,7 @@ router.use(express.json());
 // Import the pool or database connection
 const pool = require("../../db");
 
-router.get("/porducts", function (req, res) {
+router.get("/porductImages", function (req, res) {
   res.send("it's Home Page!!!");
 });
 

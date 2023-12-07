@@ -84,3 +84,10 @@ CREATE TABLE discount(
     price_id INT,
     CONSTRAINT fk_discount_prodPrice FOREIGN KEY(price_id) REFERENCES product_price(id) 
 );
+
+CREATE TABLE password(
+    id SERIAL PRIMARY KEY,
+    password VARCHAR(300) NOT NULL,
+    user_id INT,
+    CONSTRAINT fk_password_users FOREIGN KEY(user_id) REFERENCES users(id)
+);

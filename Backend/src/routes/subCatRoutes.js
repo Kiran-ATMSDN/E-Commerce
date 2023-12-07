@@ -30,7 +30,7 @@ router.post("/subCategory/addSubCategory", async (req, res) => {
 // all categories
 router.get("/subCategory/allSubCategories", async (req, res) => {
   try {
-    const allSubCategories = await pool.query("SELECT * FROM sub_category");
+    const allSubCategories = await pool.query("SELECT id, title, main_category_id FROM sub_category");
     if (allSubCategories.rows.length === 0) {
       // If no user found, send a custom message
       return res.status(404).json({ message: "Sub Category not found" });
@@ -48,7 +48,7 @@ router.get("/subCategory/subCategories/:id", async (req, res) => {
   try {
     const { id } = req.params; // Extract id from params
     const searchSubCategory = await pool.query(
-      "SELECT * FROM sub_category WHERE id = $1",
+      "SELECT id, title, main_category_id FROM sub_category WHERE id = $1",
       [id]
     );
 
@@ -57,7 +57,7 @@ router.get("/subCategory/subCategories/:id", async (req, res) => {
       return res.status(404).json({ message: "Sub Category not found" });
     }
 
-    res.json(searchSubCategory.rows); // Send rows from the query result
+    res.json(searchSubCategory.rows[0]); // Send rows from the query result
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");
