@@ -45,7 +45,7 @@ const Navbar = () => {
     //   </div>
     // </>
 
-    <header className="padding-x py-8  z-10 w-full">
+    <header className="padding-x  z-10 w-full border border-black-5">
       <nav className="flex justify-between items-center max-container sticky top-0">
         <a href="/"><img src={logo} alt="Logo" className="" height={10} width={80}/></a>
         <form action="">

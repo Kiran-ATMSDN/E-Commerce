@@ -1,7 +1,7 @@
 const Registration = () => {
   return (
     <>
-      <div className="flex justify-center">
+      <div className="flex justify-center py-5">
         <form className="w-full max-w-lg">
           <div className="flex flex-wrap -mx-3 mb-6">
             <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
@@ -59,12 +59,17 @@ const Registration = () => {
               >
                 Gender
               </label>
-              <input
+              <select
                 className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
                 id="txtGender"
                 type="text"
                 placeholder="Gender"
-              />
+              >
+                <option disabled>Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+                <option value="other">Other</option>
+              </select>
             </div>
           </div>
           <div className="flex flex-wrap -mx-3 mb-6">
@@ -115,6 +120,15 @@ const Registration = () => {
                 placeholder="90210"
               />
             </div>
+          </div>
+          <div>
+            <label
+              className="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2"
+              for="grid-zip"
+            >
+              Date of Birth
+            </label>
+            <input type="datepicker" />
           </div>
         </form>
       </div>
