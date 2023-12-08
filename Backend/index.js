@@ -24,6 +24,15 @@ app.use(subCatRoutes);
 const productRoutes = require("./src/routes/productRoutes");
 app.use(productRoutes);
 
+// product images
+const productImgRoutes = require("./src/routes/productsImgRoutes");
+app.use(productImgRoutes);
+
+// product price
+const productPriceRoutes = require("./src/routes/productPriceRoutes");
+app.use(productPriceRoutes);
+
+
 app.listen(3000, function () {
   console.log("Server started on port 3000...");
 });

@@ -9,22 +9,16 @@ router.get("/porductImages", function (req, res) {
   res.send("it's Home Page!!!");
 });
 
-//registration page
-router.post("/product/addProduct", async (req, res) => {
+//add product images page
+router.post("/productImage/addProductImage", async (req, res) => {
   try {
-    const {
-      id,
-      title,
-      description,
-      main_category_id,
-      sub_category_id,
-      status,
-    } = req.body;
+    const { id, image_url, alternate_text, is_primary_image, product_id } =
+      req.body;
 
     // Execute the query using the established pool
     const newUser = await pool.query(
-      "INSERT INTO products (id, title, description, main_category_id, sub_category_id,status) VALUES ($1, $2, $3, $4, $5,$6) RETURNING *",
-      [id, title, description, main_category_id, sub_category_id, status]
+      "INSERT INTO product_images (id, image_url, alternate_text, is_primary_image, product_id) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      [id, image_url, alternate_text, is_primary_image, product_id]
     );
 
     res.json(newUser.rows[0]);
@@ -34,57 +28,59 @@ router.post("/product/addProduct", async (req, res) => {
   }
 });
 
-// All products
-router.get("/product/allProducts", async (req, res) => {
+// All product images
+router.get("/productImage/allProductsImages", async (req, res) => {
   try {
-    const allProducts = await pool.query("SELECT id, title, description, main_category_id, sub_category_id,status FROM products");
-    if (allProducts.rows.length === 0) {
+    const allProductsImages = await pool.query(
+      "SELECT id, image_url, alternate_text, is_primary_image, product_id FROM product_images"
+    );
+    if (allProductsImages.rows.length === 0) {
       // If no user found, send a custom message
-      return res.status(404).json({ message: "Products not found" });
+      return res.status(404).json({ message: "Product Images not found" });
     }
 
-    res.json(allProducts.rows); // Send rows from the query result
+    res.json(allProductsImages.rows); // Send rows from the query result
   } catch (err) {
     console.log(err);
     res.status(500).send("Server Error");
   }
 });
 
-// search products
-router.get("/product/products/:id", async (req, res) => {
+// search product Image
+router.get("/productImage/ProductImage/:id", async (req, res) => {
   try {
     const { id } = req.params; // Extract id from params
-    const productSearch = await pool.query(
-      "SELECT id, title, description, main_category_id, sub_category_id,status FROM products WHERE id = $1",
+    const productImgSearch = await pool.query(
+      "SELECT id, image_url, alternate_text, is_primary_image, product_id FROM product_images WHERE id = $1",
       [id]
     );
 
-    if (productSearch.rows.length === 0) {
+    if (productImgSearch.rows.length === 0) {
       // If no user found, send a custom message
-      return res.status(404).json({ message: "Product not found" });
+      return res.status(404).json({ message: "Product Image not found" });
     }
 
-    res.json(productSearch.rows[0]); // Send rows from the query result
+    res.json(productImgSearch.rows[0]); // Send rows from the query result
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");
   }
 });
 
-// update product
-router.put("/product/updateProduct/:id", async (req, res) => {
+// update productImage
+router.put("/productImage/updateProductImage/:id", async (req, res) => {
   try {
     const { id } = req.params; // Extract id from params
 
-    const { title, description, main_category_id, sub_category_id, status } =
+    const { image_url, alternate_text, is_primary_image, product_id } =
       req.body; // Extract individual fields from req.body
 
-    const updateUser = await pool.query(
-      "UPDATE products SET title = $1, description = $2, main_category_id = $3, sub_category_id = $4, status = $5 WHERE id =$6",
-      [title, description, main_category_id, sub_category_id, status, id] // Add id to the parameter list
+    const updateProductImage = await pool.query(
+      "UPDATE product_images SET image_url = $1, alternate_text = $2, is_primary_image = $3, product_id = $4 WHERE id =$5",
+      [image_url, alternate_text, is_primary_image, product_id, id] // Add id to the parameter list
     );
 
-    res.json("Product updated!!");
+    res.json("Product Image updated!!");
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");
@@ -92,16 +88,16 @@ router.put("/product/updateProduct/:id", async (req, res) => {
 });
 
 // delete products
-router.delete("/product/deleteProduct/:id", async (req, res) => {
+router.delete("/productImage/deleteProductImage/:id", async (req, res) => {
   try {
     const { id } = req.params; // Extract id from params
 
-    const deleteProduct = await pool.query(
-      "DELETE FROM products WHERE id = $1",
+    const deleteProductImage = await pool.query(
+      "DELETE FROM product_images WHERE id = $1",
       [id]
     );
 
-    res.json("Product deleted!!");
+    res.json("Product Image deleted!!");
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");
