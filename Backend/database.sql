@@ -32,7 +32,7 @@ CREATE TABLE products (
     CONSTRAINT fk_prod_mainCat FOREIGN KEY(main_category_id) REFERENCES main_category(id),
     sub_category_id int,
     CONSTRAINT fk_prod_subCat FOREIGN KEY(sub_category_id) REFERENCES sub_category(id),
-    status boolean DEFAULT TRUE NOT NULL;
+    status boolean DEFAULT TRUE NOT NULL
 );
 
 CREATE TABLE product_images(
