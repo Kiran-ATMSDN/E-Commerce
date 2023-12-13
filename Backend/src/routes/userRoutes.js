@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 router.use(express.json());
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 
 // Import the pool or database connection
 const pool = require("../../db");
@@ -15,7 +15,6 @@ router.get("/user", function (req, res) {
 router.post("/user/registration", async (req, res) => {
   try {
     const {
-      id,
       name,
       email,
       gender,
@@ -29,9 +28,8 @@ router.post("/user/registration", async (req, res) => {
 
     // Execute the query using the established pool
     const newUser = await pool.query(
-      "INSERT INTO users (id, name, email, gender, mob_no, birth_date, address, pin_code, city, password) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10) RETURNING *",
+      "INSERT INTO users ( name, email, gender, mob_no, birth_date, address, pin_code, city, password) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9) RETURNING id, name, email, gender, mob_no, birth_date, address, pin_code, city, password",
       [
-        id,
         name,
         email,
         gender,
@@ -44,7 +42,11 @@ router.post("/user/registration", async (req, res) => {
       ]
     );
 
-    res.json(newUser.rows[0]);
+    res.json({
+      responseCode: 200,
+      responsemsg: "User added !!",
+      users: newUser.rows[0],
+    });
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Server Error");
@@ -54,13 +56,19 @@ router.post("/user/registration", async (req, res) => {
 // All users
 router.get("/user/allUsers", async (req, res) => {
   try {
-    const allUsers = await pool.query("SELECT id, name, email, gender, mob_no, birth_date, address, pin_code, city, password FROM users");
+    const allUsers = await pool.query(
+      "SELECT id, name, email, gender, mob_no, birth_date, address, pin_code, city, password FROM users"
+    );
     if (allUsers.rows.length === 0) {
       // If no user found, send a custom message
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.json(allUsers.rows); // Send rows from the query result
+    res.json({
+      responseCode: 200,
+      responsemsg: "All Users",
+      users: allUsers.rows,
+    }); // Send rows from the query result
   } catch (err) {
     console.log(err);
     res.status(500).send("Server Error");
@@ -71,22 +79,26 @@ router.get("/user/allUsers", async (req, res) => {
 router.get("/user/users/:id", async (req, res) => {
   try {
     const { id } = req.params; // Extract id from params
-    const userSearch = await pool.query("SELECT id, name, email, gender, mob_no, birth_date, address, pin_code, city, password FROM users WHERE id = $1", [
-      id,
-    ]);
+    const userSearch = await pool.query(
+      "SELECT id, name, email, gender, mob_no, birth_date, address, pin_code, city, password FROM users WHERE id = $1",
+      [id]
+    );
 
     if (userSearch.rows.length === 0) {
       // If no user found, send a custom message
       return res.status(404).json({ message: "User not found" });
     }
 
-    res.json(userSearch.rows[0]); // Send the first (and only) user object directly
+    res.json({
+      responseCode: 200,
+      responsemsg: "All Users",
+      users: userSearch.rows[0],
+    }); // Send the first (and only) user object directly
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");
   }
 });
-
 
 // update user
 router.put("/user/updateUser/:id", async (req, res) => {
@@ -153,7 +165,7 @@ router.post("/user/login", async (req, res) => {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    return res.status(200).json({ message: "Login successful"});
+    return res.status(200).json({ message: "Login successful" });
   } catch (err) {
     console.error("Login error:", err);
     return res.status(500).json({ message: "Internal Server Error" });

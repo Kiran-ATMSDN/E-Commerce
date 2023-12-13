@@ -12,15 +12,19 @@ router.get("/subCategories", function (req, res) {
 //add sub_categories
 router.post("/subCategory/addSubCategory", async (req, res) => {
   try {
-    const { id, title, main_category_id } = req.body;
+    const { title, main_category_id } = req.body;
 
     // Execute the query using the established pool
-    const newUser = await pool.query(
-      "INSERT INTO sub_category (id, title, main_category_id) VALUES ($1, $2, $3) RETURNING *",
-      [id, title, main_category_id]
+    const newSubCategory = await pool.query(
+      "INSERT INTO sub_category (title, main_category_id,) VALUES ($1, $2) RETURNING id, title, main_category_id",
+      [title, main_category_id]
     );
 
-    res.json(newUser.rows[0]);
+    res.json({
+      responseCode: 200,
+      responseMsg: "subCategory added",
+      data: newSubCategory.rows[0],
+    });
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Server Error");
@@ -30,13 +34,19 @@ router.post("/subCategory/addSubCategory", async (req, res) => {
 // all categories
 router.get("/subCategory/allSubCategories", async (req, res) => {
   try {
-    const allSubCategories = await pool.query("SELECT id, title, main_category_id FROM sub_category");
+    const allSubCategories = await pool.query(
+      "SELECT id, title, main_category_id FROM sub_category"
+    );
     if (allSubCategories.rows.length === 0) {
       // If no user found, send a custom message
       return res.status(404).json({ message: "Sub Category not found" });
     }
 
-    res.json(allSubCategories.rows); // Send rows from the query result
+    res.json({
+      responseCode: 200,
+      responseMsg: "all subCategory",
+      data: allSubCategories.rows,
+    }); // Send rows from the query result
   } catch (err) {
     console.log(err);
     res.status(500).send("Server Error");

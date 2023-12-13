@@ -1,4 +1,5 @@
-CREATE TABLE users(
+CREATE TABLE users
+(
     id SERIAL PRIMARY KEY,
     name VARCHAR(50),
     email VARCHAR(300),
@@ -11,22 +12,25 @@ CREATE TABLE users(
     password VARCHAR(50)
 );
 
-CREATE TABLE main_category(
+CREATE TABLE main_category
+(
     id SERIAL PRIMARY KEY,
     title VARCHAR(30),
-    image_url VARCHAR(255) 
+    image_url VARCHAR(255)
 );
 
-CREATE TABLE sub_category (
+CREATE TABLE sub_category
+(
     id SERIAL PRIMARY KEY,
     title varchar(50),
     main_category_id int,
     CONSTRAINT fk_subCat_mainCat FOREIGN KEY(main_category_id) REFERENCES main_category(id)
 );
 
-CREATE TABLE products (
+CREATE TABLE products
+(
     id SERIAL PRIMARY KEY,
-	title varchar(50),
+    title varchar(50),
     description varchar(100),
     main_category_id int,
     CONSTRAINT fk_prod_mainCat FOREIGN KEY(main_category_id) REFERENCES main_category(id),
@@ -35,7 +39,8 @@ CREATE TABLE products (
     status boolean DEFAULT TRUE NOT NULL
 );
 
-CREATE TABLE product_images(
+CREATE TABLE product_images
+(
     id SERIAL PRIMARY KEY,
     image_url VARCHAR(255) NOT NULL,
     alternate_text VARCHAR(100) not NULL,
@@ -44,29 +49,32 @@ CREATE TABLE product_images(
     CONSTRAINT fk_prodImg_products FOREIGN KEY(product_id) REFERENCES products(id)
 );
 
-CREATE TABLE product_price(
+CREATE TABLE product_price
+(
     id SERIAL PRIMARY KEY,
     product_id INT,
     CONSTRAINT fk_prodPrice_products FOREIGN KEY(product_id) REFERENCES products(id),
     price DECIMAL(10,2) NOT NULL,
-    from_date  DATE NOT NULL,
+    from_date DATE NOT NULL,
     to_date DATE NOT NULL,
-    added_on DATE NOT NULL 
+    added_on DATE NOT NULL
 );
 
-CREATE TABLE orders(
+CREATE TABLE orders
+(
     id SERIAL PRIMARY KEY,
     user_id INT,
     CONSTRAINT fk_orders_users FOREIGN KEY(user_id) REFERENCES users(id),
     date_time DATE NOT NULL,
-    shipping_address VARCHAR(100)  NOT NULL,
+    shipping_address VARCHAR(100) NOT NULL,
     shipping_pin INT NOT NULL,
     shipping_city VARCHAR(30) NOT NULL,
     shipping_status INT NOT NULL
 );
 
 
-CREATE TABLE order_details(
+CREATE TABLE order_details
+(
     id SERIAL PRIMARY KEY,
     order_id INT,
     CONSTRAINT fk_orderDetails_orders FOREIGN KEY(order_id) REFERENCES orders(id),
@@ -76,16 +84,18 @@ CREATE TABLE order_details(
     product_status BOOLEAN NOT NULL
 );
 
-CREATE TABLE discount(
+CREATE TABLE discounts
+(
     id SERIAL PRIMARY KEY,
     discount_percentage INT NOT NULL,
-    start_date DATE NOT NULL,
-    end_date DATE NOT NULL,
-    price_id INT,
-    CONSTRAINT fk_discount_prodPrice FOREIGN KEY(price_id) REFERENCES product_price(id) 
+    from_date DATE NOT NULL,
+    to_date DATE NOT NULL,
+    product_id INT,
+    CONSTRAINT fk_discount_products FOREIGN KEY(product_id) REFERENCES products(id)
 );
 
-CREATE TABLE password(
+CREATE TABLE passwords
+(
     id SERIAL PRIMARY KEY,
     password VARCHAR(300) NOT NULL,
     user_id INT,
