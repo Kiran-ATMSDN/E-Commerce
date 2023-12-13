@@ -24,7 +24,8 @@ CREATE TABLE sub_category
     id SERIAL PRIMARY KEY,
     title varchar(50),
     main_category_id int,
-    CONSTRAINT fk_subCat_mainCat FOREIGN KEY(main_category_id) REFERENCES main_category(id)
+    CONSTRAINT fk_subCat_mainCat FOREIGN KEY(main_category_id) REFERENCES main_category(id),
+    image_url VARCHAR(500)
 );
 
 CREATE TABLE products
