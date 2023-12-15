@@ -13,7 +13,6 @@ router.get("/porductOrder", function (req, res) {
 router.post("/productOrder/addProductOrder", async (req, res) => {
   try {
     const {
-      id,
       user_id,
       date_time,
       shipping_address,
@@ -24,9 +23,8 @@ router.post("/productOrder/addProductOrder", async (req, res) => {
 
     // Execute the query using the established pool
     const newProductOrder = await pool.query(
-      "INSERT INTO orders (id, user_id, date_time, shipping_address, shipping_pin, shipping_city, shipping_status) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *",
+      "INSERT INTO orders (id, user_id, date_time, shipping_address, shipping_pin, shipping_city, shipping_status) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id, user_id, date_time, shipping_address, shipping_pin, shipping_city, shipping_status",
       [
-        id,
         user_id,
         date_time,
         shipping_address,
@@ -36,7 +34,11 @@ router.post("/productOrder/addProductOrder", async (req, res) => {
       ]
     );
 
-    res.json(newProductOrder.rows[0]);
+    res.json({
+      responseCode: 200,
+      responseMsg: "rpoduct order added",
+      data: newProductOrder.rows[0],
+    });
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Server Error");
@@ -54,7 +56,11 @@ router.get("/productOrder/allProductsOrder", async (req, res) => {
       return res.status(404).json({ message: "Orders not found" });
     }
 
-    res.json(allProductsOrder.rows); // Send rows from the query result
+    res.json({
+      responseCode: 200,
+      responseMsg: "all product order",
+      data: allProductsOrder.rows,
+    }); // Send rows from the query result
   } catch (err) {
     console.log(err);
     res.status(500).send("Server Error");
@@ -75,7 +81,11 @@ router.get("/productOrder/ProductOrder/:id", async (req, res) => {
       return res.status(404).json({ message: "Order not found !!!" });
     }
 
-    res.json(productOrderSearch.rows[0]); // Send rows from the query result
+    res.json({
+      responseCode: 200,
+      responseMsg: "order data",
+      data: productOrderSearch.rows[0],
+    }); // Send rows from the query result
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");
@@ -87,11 +97,26 @@ router.put("/productOrder/updateProductOrder/:id", async (req, res) => {
   try {
     const { id } = req.params; // Extract id from params
 
-    const { user_id, date_time, shipping_address, shipping_pin, shipping_city, shipping_status } = req.body; // Extract individual fields from req.body
+    const {
+      user_id,
+      date_time,
+      shipping_address,
+      shipping_pin,
+      shipping_city,
+      shipping_status,
+    } = req.body; // Extract individual fields from req.body
 
     const updateProductPrice = await pool.query(
       "UPDATE product_price SET user_id = $1, date_time = $2, shipping_address = $3, shipping_pin = $4, shipping_city = $5, shipping_status = $6 WHERE id =$7",
-      [user_id, date_time, shipping_address, shipping_pin, shipping_city, shipping_status, id] // Add id to the parameter list
+      [
+        user_id,
+        date_time,
+        shipping_address,
+        shipping_pin,
+        shipping_city,
+        shipping_status,
+        id,
+      ] // Add id to the parameter list
     );
 
     res.json("Product Order updated!!");

@@ -12,15 +12,19 @@ router.get("/porductPrice", function (req, res) {
 //add product images page
 router.post("/productPrice/addProductPrice", async (req, res) => {
   try {
-    const { id, product_id, price, from_date, to_date, added_on } = req.body;
+    const { product_id, price, from_date, to_date, added_on } = req.body;
 
     // Execute the query using the established pool
     const newProductPrice = await pool.query(
-      "INSERT INTO product_price (id, product_id, price, from_date, to_date, added_on) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *",
-      [id, product_id, price, from_date, to_date, added_on]
+      "INSERT INTO product_price ( product_id, price, from_date, to_date, added_on) VALUES ($1, $2, $3, $4, $5) RETURNING id, product_id, price, from_date, to_date, added_on",
+      [product_id, price, from_date, to_date, added_on]
     );
 
-    res.json(newProductPrice.rows[0]);
+    res.json({
+      responseCode: 200,
+      responseMsg: "product price added",
+      data: newProductPrice.rows[0],
+    });
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Server Error");
@@ -38,7 +42,11 @@ router.get("/productPrice/allProductsPrice", async (req, res) => {
       return res.status(404).json({ message: "Product Price not found" });
     }
 
-    res.json(allProductsPrice.rows); // Send rows from the query result
+    res.json({
+      responseCode: 200,
+      responseMsg: "all product price",
+      data: allProductsPrice.rows,
+    }); // Send rows from the query result
   } catch (err) {
     console.log(err);
     res.status(500).send("Server Error");
@@ -59,7 +67,11 @@ router.get("/productPrice/ProductPrice/:id", async (req, res) => {
       return res.status(404).json({ message: "Product Image not found" });
     }
 
-    res.json(productPriceSearch.rows[0]); // Send rows from the query result
+    res.json({
+      responseCode: 200,
+      responseMsg: "product price data",
+      data: productPriceSearch.rows[0],
+    }); // Send rows from the query result
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");
@@ -71,8 +83,7 @@ router.put("/productPrice/updateProductPrice/:id", async (req, res) => {
   try {
     const { id } = req.params; // Extract id from params
 
-    const { product_id, price, from_date, to_date, added_on } =
-      req.body; // Extract individual fields from req.body
+    const { product_id, price, from_date, to_date, added_on } = req.body; // Extract individual fields from req.body
 
     const updateProductPrice = await pool.query(
       "UPDATE product_price SET product_id = $1, price = $2, from_date = $3, to_date = $4, added_on = $5 WHERE id =$6",

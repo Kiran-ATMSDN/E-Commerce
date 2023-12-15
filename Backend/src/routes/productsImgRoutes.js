@@ -12,16 +12,20 @@ router.get("/porductImages", function (req, res) {
 //add product images page
 router.post("/productImage/addProductImage", async (req, res) => {
   try {
-    const { id, image_url, alternate_text, is_primary_image, product_id } =
+    const { image_url, alternate_text, is_primary_image, product_id } =
       req.body;
 
     // Execute the query using the established pool
-    const newUser = await pool.query(
-      "INSERT INTO product_images (id, image_url, alternate_text, is_primary_image, product_id) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-      [id, image_url, alternate_text, is_primary_image, product_id]
+    const newProdImg = await pool.query(
+      "INSERT INTO product_images (image_url, alternate_text, is_primary_image, product_id) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      [image_url, alternate_text, is_primary_image, product_id]
     );
 
-    res.json(newUser.rows[0]);
+    res.json({
+      responseCode: 200,
+      responseMsg: "Product image added",
+      data: newProdImg.rows[0],
+    });
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Server Error");
@@ -39,7 +43,11 @@ router.get("/productImage/allProductsImages", async (req, res) => {
       return res.status(404).json({ message: "Product Images not found" });
     }
 
-    res.json(allProductsImages.rows); // Send rows from the query result
+    res.json({
+      responseCode: 200,
+      responseMsg: "all Porduct images",
+      data: allProductsImages.rows,
+    }); // Send rows from the query result
   } catch (err) {
     console.log(err);
     res.status(500).send("Server Error");
@@ -60,7 +68,11 @@ router.get("/productImage/ProductImage/:id", async (req, res) => {
       return res.status(404).json({ message: "Product Image not found" });
     }
 
-    res.json(productImgSearch.rows[0]); // Send rows from the query result
+    res.json({
+      responseCode: 200,
+      responseMsg: "Product image data",
+      data: productImgSearch.rows[0],
+    }); // Send rows from the query result
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");

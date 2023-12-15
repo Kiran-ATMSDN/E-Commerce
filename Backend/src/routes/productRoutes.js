@@ -12,22 +12,20 @@ router.get("/porducts", function (req, res) {
 //registration page
 router.post("/product/addProduct", async (req, res) => {
   try {
-    const {
-      id,
-      title,
-      description,
-      main_category_id,
-      sub_category_id,
-      status,
-    } = req.body;
+    const { title, description, main_category_id, sub_category_id, status } =
+      req.body;
 
     // Execute the query using the established pool
-    const newUser = await pool.query(
-      "INSERT INTO products (id, title, description, main_category_id, sub_category_id,status) VALUES ($1, $2, $3, $4, $5,$6) RETURNING *",
-      [id, title, description, main_category_id, sub_category_id, status]
+    const newProduct = await pool.query(
+      "INSERT INTO products ( title, description, main_category_id, sub_category_id,status) VALUES ($1, $2, $3, $4, $5) RETURNING id, title, description, main_category_id, sub_category_id,status",
+      [title, description, main_category_id, sub_category_id, status]
     );
 
-    res.json(newUser.rows[0]);
+    res.json({
+      responseCode: 200,
+      responseMsg: "Product added",
+      data: newProduct,
+    });
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Server Error");
@@ -37,13 +35,19 @@ router.post("/product/addProduct", async (req, res) => {
 // All products
 router.get("/product/allProducts", async (req, res) => {
   try {
-    const allProducts = await pool.query("SELECT id, title, description, main_category_id, sub_category_id,status FROM products");
-    if (allProducts.rows.length === 0) {
+    const allProduct = await pool.query(
+      "SELECT id, title, description, main_category_id, sub_category_id,status FROM products"
+    );
+    if (allProduct.rows.length === 0) {
       // If no user found, send a custom message
       return res.status(404).json({ message: "Products not found" });
     }
 
-    res.json(allProducts.rows); // Send rows from the query result
+    res.json({
+      responseCode: 200,
+      responseMsg: "all Porducts",
+      data: allProduct.rows,
+    }); // Send rows from the query result
   } catch (err) {
     console.log(err);
     res.status(500).send("Server Error");
@@ -64,7 +68,11 @@ router.get("/product/products/:id", async (req, res) => {
       return res.status(404).json({ message: "Product not found" });
     }
 
-    res.json(productSearch.rows[0]); // Send rows from the query result
+    res.json({
+      responseCode: 200,
+      responseMsg: "Product data",
+      data: productSearch.rows[0],
+    }); // Send rows from the query result
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");

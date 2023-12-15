@@ -31,7 +31,7 @@ router.post("/subCategory/addSubCategory", async (req, res) => {
   }
 });
 
-// all categories
+// all sub categories
 router.get("/subCategory/allSubCategories", async (req, res) => {
   try {
     const allSubCategories = await pool.query(
@@ -53,7 +53,7 @@ router.get("/subCategory/allSubCategories", async (req, res) => {
   }
 });
 
-// search categories
+// search sub categories
 router.get("/subCategory/subCategories/:id", async (req, res) => {
   try {
     const { id } = req.params; // Extract id from params

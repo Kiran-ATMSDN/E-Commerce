@@ -12,22 +12,26 @@ router.get("/categories", function (req, res) {
 //add categories
 router.post("/category/addCategory", async (req, res) => {
   try {
-    const { id, title, image_url } = req.body;
+    const { title, image_url } = req.body;
 
     // Execute the query using the established pool
-    const newUser = await pool.query(
-      "INSERT INTO main_category (id, title, image_url) VALUES ($1, $2, $3) RETURNING *",
-      [id, title, image_url]
+    const newCategory = await pool.query(
+      "INSERT INTO main_category ( title, image_url) VALUES ($1, $2) RETURNING id, title, image_url",
+      [title, image_url]
     );
 
-    res.json(newUser.rows[0]);
+    res.json({
+      responseCode: 200,
+      responseMsg: "main category added",
+      data: newCategory.rows[0],
+    });
   } catch (error) {
     console.error(error.message);
     res.status(500).send("Server Error");
   }
 });
 
-// all categories
+// all main categories
 router.get("/category/allCategories", async (req, res) => {
   try {
     const allCategories = await pool.query(
@@ -38,14 +42,18 @@ router.get("/category/allCategories", async (req, res) => {
       return res.status(404).json({ message: "category not found" });
     }
 
-    res.json(allCategories.rows); // Send rows from the query result
+    res.json({
+      responseCode: 200,
+      responseMsg: "all main categories",
+      data: allCategories.rows,
+    }); // Send rows from the query result
   } catch (err) {
     console.log(err);
     res.status(500).send("Server Error");
   }
 });
 
-// search categories
+// search main categories
 router.get("/category/categories/:id", async (req, res) => {
   try {
     const { id } = req.params; // Extract id from params
@@ -59,7 +67,11 @@ router.get("/category/categories/:id", async (req, res) => {
       return res.status(404).json({ message: "Category not found" });
     }
 
-    res.json(searchCategory.rows[0]); // Send rows from the query result
+    res.json({
+      responseCode: 200,
+      responseMsg: "main category data",
+      data: searchCategory.rows[0],
+    }); // Send rows from the query result
   } catch (err) {
     console.error(err);
     res.status(500).send("Server Error");
