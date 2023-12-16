@@ -2,7 +2,7 @@ CREATE TABLE users
 (
     id SERIAL PRIMARY KEY,
     name VARCHAR(50),
-    email VARCHAR(300),
+    email VARCHAR(300), 
     gender VARCHAR(30),
     mob_no INTEGER,
     birth_date VARCHAR(50),
